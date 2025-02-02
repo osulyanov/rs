@@ -51,6 +51,7 @@ body::after {
 }
 
 .container {
+  text-align: left;
   max-width: 42rem;
   margin-left: auto;
   margin-right: auto;
