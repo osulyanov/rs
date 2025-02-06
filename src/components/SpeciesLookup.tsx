@@ -21,9 +21,7 @@ class SpeciesLookup extends Component<object, SpeciesLookupState> {
   }
 
   componentDidMount() {
-    if (this.state.specieName) {
-      this.triggerSearch(this.state.specieName);
-    }
+    this.triggerSearch(this.state.specieName);
   }
 
   setSpecieName = (specieName: string) => {
