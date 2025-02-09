@@ -1,7 +1,5 @@
-import { Component } from 'react';
-
-class Header extends Component {
-  ansiiHeader = `   ______          _      __
+function Header() {
+  const asciiHeader = `   ______          _      __
   / __/ /____ ____| | /| / ___ ________
  _\\ \\/ __/ _ \`/ __| |/ |/ / _ \`/ __(_-<
 /_______/\\_,_/_/  |__/|__/\\_,_/_/ /___/
@@ -10,9 +8,7 @@ class Header extends Component {
 /___/ .__\\__/\\__/_/\\__/___/
    /_/`;
 
-  render() {
-    return <pre className="ascii-header">{this.ansiiHeader}</pre>;
-  }
+  return <pre className="ascii-header">{asciiHeader}</pre>;
 }
 
 export default Header;

@@ -1,65 +1,47 @@
 import SpeciesList from './SpeciesList.tsx';
-import { Component } from 'react';
 import fetchSpeciesList, { SpeciesResult } from '../utils/fetchSpeciesList.tsx';
 import SearchForm from './SearchForm.tsx';
+import { useEffect, useState } from 'react';
 
-interface SpeciesLookupState {
-  specieName: string;
-  speciesList: null | SpeciesResult[];
-  loadingState: string;
-}
+function SpeciesLookup() {
+  const savedSpecieName = localStorage.getItem('specieName') || '';
+  const [specieName, setSpecieName] = useState(savedSpecieName);
+  const [speciesList, setSpeciesList] = useState<SpeciesResult[] | null>(null);
+  const [loadingState, setLoadingState] = useState('idle');
 
-class SpeciesLookup extends Component<object, SpeciesLookupState> {
-  constructor(props: Readonly<object>) {
-    super(props);
-    const savedSpecieName = localStorage.getItem('specieName') || '';
-    this.state = {
-      specieName: savedSpecieName,
-      speciesList: null,
-      loadingState: 'idle',
-    };
-  }
+  useEffect(() => {
+    triggerSearch(specieName);
+  }, [specieName]);
 
-  componentDidMount() {
-    this.triggerSearch(this.state.specieName);
-  }
-
-  setSpecieName = (specieName: string) => {
-    this.setState({ specieName });
-    localStorage.setItem('specieName', specieName);
-    this.triggerSearch(specieName);
-  };
-
-  triggerSearch = (specieName: string) => {
-    this.setState({ speciesList: null, loadingState: 'loading' });
+  const triggerSearch = (specieName: string) => {
+    setSpeciesList(null);
+    setLoadingState('loading');
     fetchSpeciesList(specieName)
       .then((speciesList) => {
-        this.setState({ speciesList, loadingState: 'idle' });
+        setSpeciesList(speciesList);
+        setLoadingState('idle');
       })
       .catch(() => {
         console.error(`Error fetching species`);
-        this.setState({ speciesList: null, loadingState: 'error' });
+        setSpeciesList(null);
+        setLoadingState('error');
       });
   };
 
-  render() {
-    return (
-      <>
-        <SearchForm
-          onSubmit={(e: React.FormEvent) => {
-            e.preventDefault();
-            const formData = new FormData(e.target as HTMLFormElement);
-            this.setSpecieName(formData.get('specieName') as string);
-          }}
-          defaultValue={this.state.specieName}
-        />
-        <SpeciesList
-          speciesList={this.state.speciesList}
-          loadingState={this.state.loadingState}
-        />
-      </>
-    );
-  }
+  const handleSearchFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const newSpecieName = formData.get('specieName') as string;
+    setSpecieName(newSpecieName);
+    localStorage.setItem('specieName', newSpecieName);
+  };
+
+  return (
+    <>
+      <SearchForm onSubmit={handleSearchFormSubmit} defaultValue={specieName} />
+      <SpeciesList speciesList={speciesList} loadingState={loadingState} />
+    </>
+  );
 }
 
 export default SpeciesLookup;

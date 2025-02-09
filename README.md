@@ -3,6 +3,7 @@
 ## How to install
 
 to test locally:
+
 ```bash
 npm install
 npm run dev
