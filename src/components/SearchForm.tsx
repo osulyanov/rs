@@ -1,11 +1,18 @@
-import { FormEvent } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 interface SearchFormProps {
-  onSubmit: (e: FormEvent) => void;
+  setSpecieName: Dispatch<SetStateAction<string>>;
   defaultValue: string;
 }
 
-function SearchForm({ onSubmit, defaultValue }: SearchFormProps) {
+function SearchForm({ setSpecieName, defaultValue }: SearchFormProps) {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const specieName = formData.get('specieName') as string;
+    setSpecieName(specieName);
+  };
+
   return (
     <div className="input-group">
       <form onSubmit={onSubmit}>
