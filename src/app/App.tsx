@@ -2,8 +2,8 @@ import './App.css';
 import SpeciesLookup from '../components/SpeciesLookup.tsx';
 import ErrorBoundary from './ErrorBoundary.tsx';
 import Header from './Header.tsx';
-import ErrorMessage from './ErrorMessage.tsx';
-import AppCrashingButton from '../components/AppCrashingButton.tsx';
+import AppCrashingButton from '../components/app-crashing-button.tsx';
+import MessageBox from '../components/MessageBox.tsx';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
 
 function AppErrorBoundary() {
   return (
-    <ErrorBoundary fallback={<ErrorMessage />}>
+    <ErrorBoundary fallback={<MessageBox message={'APP ERROR'} />}>
       <App />
     </ErrorBoundary>
   );
