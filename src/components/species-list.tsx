@@ -1,7 +1,7 @@
-import { SpeciesResult } from '../utils/fetchSpeciesList.tsx';
+import { SpeciesResult } from '../utils/fetch-species-list.tsx';
 import { AsciiTable3 } from 'ascii-table3';
-import MessageBox from './MessageBox.tsx';
-import Specie from './Specie.tsx';
+import MessageBox from './message-box.tsx';
+import Specie from './specie.tsx';
 
 interface SpeciesListProps {
   speciesList: SpeciesResult[] | null;

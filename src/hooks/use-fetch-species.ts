@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import fetchSpeciesList, { SpeciesResult } from '../utils/fetchSpeciesList.tsx';
+import fetchSpeciesList, {
+  SpeciesResult,
+} from '../utils/fetch-species-list.tsx';
 
 const useFetchSpecies = (specieName: string) => {
   const [speciesList, setSpeciesList] = useState<SpeciesResult[] | null>(null);

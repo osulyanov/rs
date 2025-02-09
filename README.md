@@ -19,3 +19,7 @@ You will see a search result in the table below.
 
 To test ErrorBoundary, click on the "crash me!" button.
 To get back to the site reload the page.
+
+## Important notes
+
+- The project uses [Robin Wieruch's approach](https://x.com/rwieruch/status/1836434009041035635) for kebab-case file naming.

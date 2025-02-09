@@ -1,4 +1,4 @@
-import { SpeciesResult } from '../utils/fetchSpeciesList.tsx';
+import { SpeciesResult } from '../utils/fetch-species-list.tsx';
 import { AsciiTable3 } from 'ascii-table3';
 
 interface SpecieProps {

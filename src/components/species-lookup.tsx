@@ -1,7 +1,7 @@
-import SpeciesList from './SpeciesList.tsx';
-import SearchForm from './SearchForm.tsx';
+import SpeciesList from './species-list.tsx';
+import SearchForm from './search-form.tsx';
 import { useEffect, useState } from 'react';
-import useFetchSpecies from '../hooks/useFetchSpecies.ts';
+import useFetchSpecies from '../hooks/use-fetch-species.ts';
 
 function SpeciesLookup() {
   const savedSpecieName = localStorage.getItem('specieName') || '';

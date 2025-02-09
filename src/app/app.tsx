@@ -1,9 +1,9 @@
-import './App.css';
-import SpeciesLookup from '../components/SpeciesLookup.tsx';
-import ErrorBoundary from './ErrorBoundary.tsx';
-import Header from './Header.tsx';
+import './app.css';
+import SpeciesLookup from '../components/species-lookup.tsx';
+import ErrorBoundary from './error-boundary.tsx';
+import Header from './header.tsx';
 import AppCrashingButton from '../components/app-crashing-button.tsx';
-import MessageBox from '../components/MessageBox.tsx';
+import MessageBox from '../components/message-box.tsx';
 
 function App() {
   return (
