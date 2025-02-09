@@ -1,7 +1,6 @@
 import { SpeciesResult } from '../utils/fetchSpeciesList.tsx';
 import { AsciiTable3 } from 'ascii-table3';
-import Loading from './Loading.tsx';
-import LoadingError from './LoadingError.tsx';
+import MessageBox from './MessageBox.tsx';
 import Specie from './Specie.tsx';
 
 interface SpeciesListProps {
@@ -21,13 +20,15 @@ function SpeciesList({ speciesList, loadingState }: SpeciesListProps) {
 
   return (
     <>
-      {loadingState === 'loading' && <Loading />}
+      {loadingState === 'loading' && (
+        <MessageBox message={'LOADING SPECIES...'} />
+      )}
       {loadingState === 'error' && (
-        <LoadingError message="ERROR FETCHING SPECIES" />
+        <MessageBox message="ERROR FETCHING SPECIES" />
       )}
       {speciesList !== null &&
         (speciesList.length === 0 ? (
-          <LoadingError message="NO SPECIES FOUND" />
+          <MessageBox message="NO SPECIES FOUND" />
         ) : (
           <pre className="data-report">
             {speciesTableHeader}
