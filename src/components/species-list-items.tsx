@@ -1,42 +1,51 @@
 import { SpeciesResult } from '../utils/fetch-species-list.tsx';
-import { NavLink, NavLinkRenderProps, useSearchParams } from 'react-router';
+import {
+  NavLink,
+  NavLinkRenderProps,
+  Outlet,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 
 interface SpeciesListItemsProps {
   speciesList: SpeciesResult[];
 }
 
 function SpeciesListItems({ speciesList }: SpeciesListItemsProps) {
-  const [searchParams] = useSearchParams();
-
   const linkStyle = ({ isActive }: NavLinkRenderProps) => ({
-    textDecoration: isActive ? 'underline' : 'none',
+    textDecoration: isActive ? 'underline' : undefined,
   });
+  const [searchParams] = useSearchParams();
   const page = searchParams.get('page');
   const term = searchParams.get('term');
+  const navigate = useNavigate();
+
+  const handleItemsColumnClick = () => {
+    navigate(`/?page=${page}${term ? `&term=${term}` : ''}`);
+  };
+  const handleLinkClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
 
   return (
     <>
-      <div className="items-column">
+      <div className="items-column" onClick={handleItemsColumnClick}>
         <div className="column-header">SPECIE</div>
         {speciesList?.map((specie, index) => (
           <div key={index} className="cell">
             <NavLink
-              to={`/species/${index}?page=${page}${term && `&term=${term}`}`}
+              to={`/species/${specie.url.split('/').slice(-2)[0]}?page=${page}${term ? `&term=${term} ` : ''}`}
               style={linkStyle}
+              className={'glitch-hover'}
+              onClick={handleLinkClick}
             >
-              {specie.name}
+              <strong>{specie.name}.</strong> (class: {specie.classification},
+              designation: {specie.designation})
             </NavLink>
           </div>
         ))}
       </div>
-      <div className="details-column">
-        <div className="column-header">DETAILS</div>
-        {speciesList?.map((specie, index) => (
-          <div key={index} className="cell">
-            class: {specie.classification}, designation: {specie.designation}
-          </div>
-        ))}
-      </div>
+      <Outlet />
     </>
   );
 }

@@ -2,18 +2,10 @@ import './app.css';
 import SpeciesLookup from '../pages/species-lookup.tsx';
 import ErrorBoundary from './error-boundary.tsx';
 import MessageBox from '../components/message-box.tsx';
-import { Route, Routes, useParams } from 'react-router';
+import { Route, Routes } from 'react-router';
 import NotFound from './not-found.tsx';
 import Layout from './layout.tsx';
-
-function SpecieDetail() {
-  const { specieIndex } = useParams();
-  return (
-    <div className="specie-detail">
-      <h1>Specie {specieIndex}</h1>
-    </div>
-  );
-}
+import SpecieDetails from '../components/specie-details.tsx';
 
 function App() {
   return (
@@ -21,7 +13,7 @@ function App() {
       <Route element={<Layout />}>
         <Route index element={<SpeciesLookup />} />
         <Route path="species" element={<SpeciesLookup />}>
-          <Route path=":specieIndex" element={<SpecieDetail />} />
+          <Route path=":specieId" element={<SpecieDetails />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>

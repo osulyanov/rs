@@ -6,6 +6,7 @@ export type SpeciesListResult = {
 };
 
 export type SpeciesResult = {
+  url: string;
   name: string;
   classification: string;
   designation: string;
