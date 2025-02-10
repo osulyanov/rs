@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 function Header() {
   const asciiHeader = `   ______          _      __
   / __/ /____ ____| | /| / ___ ________
@@ -8,7 +10,11 @@ function Header() {
 /___/ .__\\__/\\__/_/\\__/___/
    /_/`;
 
-  return <pre className="ascii-header">{asciiHeader}</pre>;
+  return (
+    <Link to="/" className="ascii-header">
+      <pre>{asciiHeader}</pre>
+    </Link>
+  );
 }
 
 export default Header;
