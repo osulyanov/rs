@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 interface MessageBoxProps {
-  message: string;
+  message: string | ReactNode;
 }
 
 function MessageBox({ message }: MessageBoxProps) {
