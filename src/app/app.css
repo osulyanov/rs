@@ -22,15 +22,7 @@ a {
   text-decoration: none;
 }
 
-a.link {
-  text-decoration: underline;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-a.glitch-hover:hover, button.glitch-hover:hover {
+a.link, a:hover, a.active {
   text-decoration: underline;
 }
 
@@ -201,6 +193,10 @@ body::after {
   text-transform: uppercase;
   box-shadow: 0 0 10px var(--glow-color);
   transition: all 0.3s ease;
+}
+
+.pagination-button.active {
+  text-decoration: none;
 }
 
 .pagination-button:hover:not(:disabled) {
