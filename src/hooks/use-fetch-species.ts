@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react';
 import fetchSpeciesList, {
-  SpeciesResult,
+  SpeciesListResult,
 } from '../utils/fetch-species-list.tsx';
 
-const useFetchSpecies = (specieName: string) => {
-  const [speciesList, setSpeciesList] = useState<SpeciesResult[] | null>(null);
+interface useFetchSpeciesProps {
+  specieName: string;
+  page: number;
+}
+
+const useFetchSpecies = ({ specieName, page }: useFetchSpeciesProps) => {
+  const [speciesList, setSpeciesList] = useState<SpeciesListResult | null>(
+    null
+  );
   const [loadingState, setLoadingState] = useState('idle');
 
   useEffect(() => {
-    triggerSearch(specieName);
-  }, [specieName]);
+    triggerSearch(specieName, page);
+  }, [specieName, page]);
 
-  const triggerSearch = (specieName: string) => {
+  const triggerSearch = (specieName: string, page: number) => {
     setSpeciesList(null);
     setLoadingState('loading');
-    fetchSpeciesList(specieName)
+    fetchSpeciesList(specieName, page)
       .then((speciesList) => {
         setSpeciesList(speciesList);
         setLoadingState('idle');

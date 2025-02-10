@@ -1,7 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-
 interface SearchFormProps {
-  setSpecieName: Dispatch<SetStateAction<string>>;
+  setSpecieName: (specieName: string) => void;
   defaultValue: string;
 }
 

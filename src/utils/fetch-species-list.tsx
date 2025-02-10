@@ -1,3 +1,10 @@
+export type SpeciesListResult = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: SpeciesResult[];
+};
+
 export type SpeciesResult = {
   name: string;
   classification: string;
@@ -6,16 +13,16 @@ export type SpeciesResult = {
 };
 
 const fetchSpeciesList = async (
-  specieName: string
-): Promise<SpeciesResult[]> => {
+  specieName: string,
+  page: number
+): Promise<SpeciesListResult> => {
   const response = await fetch(
-    'https://swapi.dev/api/species/?search=' + specieName
+    'https://swapi.dev/api/species/?search=' + specieName + '&page=' + page
   );
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
-  const data = await response.json();
-  return data.results;
+  return await response.json();
 };
 
 export default fetchSpeciesList;
