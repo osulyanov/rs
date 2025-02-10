@@ -25,7 +25,10 @@ function SpeciesListItems({ speciesList }: SpeciesListItemsProps) {
         {speciesList?.map((specie, index) => (
           <div key={index} className="cell">
             <NavLink
-              to={`/species/${specie.url.split('/').slice(-2)[0]}?page=${page}${term ? `&term=${term} ` : ''}`}
+              to={{
+                pathname: `/species/${specie.url.split('/').slice(-2)[0]}`,
+                search: `?page=${page}${term ? `&term=${term} ` : ''}`,
+              }}
               onClick={handleLinkClick}
             >
               <strong>{specie.name}.</strong> (class: {specie.classification},
