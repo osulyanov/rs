@@ -17,6 +17,15 @@ body {
   overflow-x: hidden;
 }
 
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+a.link {
+  text-decoration: underline;
+}
+
 /* Scan lines effect */
 body::before {
   content: '';
