@@ -6,7 +6,7 @@ interface MessageBoxProps {
 
 function MessageBox({ message }: MessageBoxProps) {
   return (
-    <div className="data-report">
+    <div className="message-box">
       <p>[{message}]</p>
     </div>
   );

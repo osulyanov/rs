@@ -2,6 +2,7 @@ import SpeciesList from './species-list.tsx';
 import SearchForm from './search-form.tsx';
 import { useEffect, useState } from 'react';
 import useFetchSpecies from '../hooks/use-fetch-species.ts';
+import { Outlet } from 'react-router';
 
 function SpeciesLookup() {
   const savedSpecieName = localStorage.getItem('specieName') || '';
@@ -16,6 +17,7 @@ function SpeciesLookup() {
     <>
       <SearchForm setSpecieName={setSpecieName} defaultValue={specieName} />
       <SpeciesList speciesList={speciesList} loadingState={loadingState} />
+      <Outlet />
     </>
   );
 }

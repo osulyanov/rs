@@ -1,7 +1,6 @@
 import { SpeciesResult } from '../utils/fetch-species-list.tsx';
-import { AsciiTable3 } from 'ascii-table3';
 import MessageBox from './message-box.tsx';
-import SpecieListItem from './specie-list-item.tsx';
+import SpeciesListItems from './species-list-items.tsx';
 
 interface SpeciesListProps {
   speciesList: SpeciesResult[] | null;
@@ -9,38 +8,19 @@ interface SpeciesListProps {
 }
 
 function SpeciesList({ speciesList, loadingState }: SpeciesListProps) {
-  const lineSep =
-    '+----------------+------------------------------------------+';
-  const speciesTableHeader = `
-  ${lineSep}
-  | ${AsciiTable3.alignAuto('Name', 14)} | ${AsciiTable3.alignCenter('Description', 40)} |
-  ${lineSep}`;
-  const speciesTableEnd = `
-  ${lineSep}`;
-
   return (
-    <>
-      {loadingState === 'loading' && (
-        <MessageBox message={'LOADING SPECIES...'} />
-      )}
+    <div className="data-report">
+      {loadingState === 'loading' && <MessageBox message="Loading..." />}
       {loadingState === 'error' && (
-        <MessageBox message="ERROR FETCHING SPECIES" />
+        <MessageBox message="Error loading species list" />
       )}
       {speciesList !== null &&
-        (speciesList.length === 0 ? (
-          <MessageBox message="NO SPECIES FOUND" />
+        (speciesList.length == 0 ? (
+          <MessageBox message="No species found" />
         ) : (
-          <>
-            <pre className="data-report">
-              {speciesTableHeader}
-              {speciesList.map((specie, index) => {
-                return <SpecieListItem key={index} specie={specie} />;
-              })}
-              {speciesTableEnd}
-            </pre>
-          </>
+          <SpeciesListItems speciesList={speciesList} />
         ))}
-    </>
+    </div>
   );
 }
 
