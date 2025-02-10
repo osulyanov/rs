@@ -14,19 +14,16 @@ function SearchForm({ setSpecieName, defaultValue }: SearchFormProps) {
   };
 
   return (
-    <div className="input-group">
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          className="input-field"
-          placeholder="[ENTER SPECIE]"
-          defaultValue={defaultValue}
-          id="specieName"
-          name="specieName"
-        />
-        <button className="fetch-button">&gt; SEARCH</button>
-      </form>
-    </div>
+    <form onSubmit={onSubmit} className="input-group">
+      <input
+        type="text"
+        className="input-field"
+        placeholder="[ENTER SPECIE]"
+        defaultValue={defaultValue}
+        name="specieName"
+      />
+      <button className="fetch-button">&gt; SEARCH</button>
+    </form>
   );
 }
 
