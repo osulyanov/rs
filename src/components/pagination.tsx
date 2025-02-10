@@ -1,5 +1,5 @@
 import { SpeciesListResult } from '../utils/fetch-species-list.tsx';
-import { NavLink, useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 function Pagination({ speciesList }: { speciesList: SpeciesListResult }) {
   const [searchParams] = useSearchParams();
@@ -14,22 +14,22 @@ function Pagination({ speciesList }: { speciesList: SpeciesListResult }) {
 
   return (
     <div className="pagination">
-      <NavLink
+      <Link
         to={`/?page=${prevPage}${term ? `&term=${term}` : ''}`}
         className={`pagination-button${prevPage ? '' : ' hidden'}`}
       >
         &lt; PREV
-      </NavLink>
+      </Link>
 
       <span className="page-info">
         Page {page} of {totalPages}
       </span>
-      <NavLink
+      <Link
         to={`/?page=${nextPage}${term ? `&term=${term}` : ''}`}
         className={`pagination-button${nextPage ? '' : ' hidden'}`}
       >
         NEXT &gt;
-      </NavLink>
+      </Link>
     </div>
   );
 }

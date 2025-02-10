@@ -195,10 +195,6 @@ body::after {
   transition: all 0.3s ease;
 }
 
-.pagination-button.active {
-  text-decoration: none;
-}
-
 .pagination-button:hover:not(:disabled) {
   background-color: var(--text-color);
   color: var(--bg-color);
