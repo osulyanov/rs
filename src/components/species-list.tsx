@@ -1,7 +1,7 @@
-import { SpeciesListResult } from '../utils/fetch-species-list.tsx';
-import MessageBox from './message-box.tsx';
-import SpeciesListItems from './species-list-items.tsx';
-import Pagination from './pagination.tsx';
+import { SpeciesListResult } from '../utils/fetch-species-list';
+import MessageBox from './message-box';
+import SpeciesListItems from './species-list-items';
+import Pagination from './pagination';
 
 interface SpeciesListProps {
   speciesList: SpeciesListResult | null;

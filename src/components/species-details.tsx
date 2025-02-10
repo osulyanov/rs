@@ -1,4 +1,4 @@
-import { SpeciesResult } from '../utils/fetch-species-list.tsx';
+import { SpeciesResult } from '../utils/fetch-species-list';
 
 interface SpeciesDetailsProps {
   speciesList?: SpeciesResult[];

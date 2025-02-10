@@ -1,4 +1,4 @@
-import ClearButton from './clear-button.tsx';
+import ClearButton from './clear-button';
 import { useParams } from 'react-router';
 import useFetchSpecie from '../hooks/use-fetch-specie.ts';
 

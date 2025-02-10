@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import fetchSpeciesList, {
   SpeciesListResult,
-} from '../utils/fetch-species-list.tsx';
+} from '../utils/fetch-species-list';
 
 interface useFetchSpeciesProps {
   specieName: string;

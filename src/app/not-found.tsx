@@ -1,4 +1,4 @@
-import MessageBox from '../components/message-box.tsx';
+import MessageBox from '../components/message-box';
 import { NavLink } from 'react-router';
 
 function NotFound() {

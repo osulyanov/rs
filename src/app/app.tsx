@@ -1,11 +1,11 @@
 import './app.css';
-import SpeciesLookup from '../pages/species-lookup.tsx';
-import ErrorBoundary from './error-boundary.tsx';
-import MessageBox from '../components/message-box.tsx';
+import SpeciesLookup from '../pages/species-lookup';
+import ErrorBoundary from './error-boundary';
+import MessageBox from '../components/message-box';
 import { Route, Routes } from 'react-router';
-import NotFound from './not-found.tsx';
-import Layout from './layout.tsx';
-import SpecieDetails from '../components/specie-details.tsx';
+import NotFound from './not-found';
+import Layout from './layout';
+import SpecieDetails from '../components/specie-details';
 
 function App() {
   return (

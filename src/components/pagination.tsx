@@ -1,4 +1,4 @@
-import { SpeciesListResult } from '../utils/fetch-species-list.tsx';
+import { SpeciesListResult } from '../utils/fetch-species-list';
 import { Link, useSearchParams } from 'react-router';
 
 function Pagination({ speciesList }: { speciesList: SpeciesListResult }) {

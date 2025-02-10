@@ -1,4 +1,4 @@
-import { SpeciesResult } from '../utils/fetch-species-list.tsx';
+import { SpeciesResult } from '../utils/fetch-species-list';
 import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router';
 
 interface SpeciesListItemsProps {

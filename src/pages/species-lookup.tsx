@@ -1,5 +1,5 @@
-import SpeciesList from '../components/species-list.tsx';
-import SearchForm from '../components/search-form.tsx';
+import SpeciesList from '../components/species-list';
+import SearchForm from '../components/search-form';
 import { useEffect, useState } from 'react';
 import useFetchSpecies from '../hooks/use-fetch-species.ts';
 import { useNavigate, useSearchParams } from 'react-router';
