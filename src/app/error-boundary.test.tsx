@@ -13,7 +13,7 @@ describe('ErrorBoundary', () => {
     jest.restoreAllMocks();
   });
 
-  test('renders children when there is no error', () => {
+  it('renders children when there is no error', () => {
     render(
       <ErrorBoundary fallback={<FallbackComponent />}>
         <ChildComponent />
@@ -22,7 +22,7 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('Child Component')).toBeInTheDocument();
   });
 
-  test('renders fallback when there is an error', () => {
+  it('renders fallback when there is an error', () => {
     const ErrorThrowingComponent = () => {
       throw new Error('Test error');
     };
