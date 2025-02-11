@@ -10,7 +10,7 @@ export type SpeciesResult = {
   name: string;
   classification: string;
   designation: string;
-  average_height: string;
+  average_height?: string;
 };
 
 const fetchSpeciesList = async (
