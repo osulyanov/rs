@@ -7,7 +7,6 @@ export interface SpecieResult {
   hair_colors: string;
   eye_colors: string;
   average_lifespan: string;
-  homeworld: string;
   language: string;
   [key: string]: string;
 }
