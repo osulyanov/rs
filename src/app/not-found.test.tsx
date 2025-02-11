@@ -10,7 +10,7 @@ jest.mock('../components/message-box', () => {
 });
 
 describe('NotFound', () => {
-  test('contains GO HOME link', () => {
+  it('contains GO HOME link', () => {
     render(
       <Router>
         <NotFound />

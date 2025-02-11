@@ -16,7 +16,7 @@ describe('Layout', () => {
     expect(screen.getByText('Mocked Header')).toBeInTheDocument();
   });
 
-  test('renders Outlet component', () => {
+  it('renders Outlet component', () => {
     render(<Layout />);
     expect(screen.getByText('Mocked Outlet')).toBeInTheDocument();
   });
