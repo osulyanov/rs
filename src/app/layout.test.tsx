@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 import Layout from './layout';
 
 jest.mock('./header', () => {
-  return () => {
-    '<div>Mocked Header</div>';
-  };
+  const MockedHeader = () => <div>Mocked Header</div>;
+  MockedHeader.displayName = 'MockedHeader';
+  return MockedHeader;
 });
 jest.mock('react-router', () => ({
   Outlet: () => <div>Mocked Outlet</div>,
