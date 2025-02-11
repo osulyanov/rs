@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "vitest/jsdom"],
+    "esModuleInterop": true
   },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "types": ["node", "jest", "@testing-library/jest-dom"]
 }
