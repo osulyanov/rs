@@ -14,10 +14,6 @@ const useFetchSpecies = ({ specieName, page }: useFetchSpeciesProps) => {
   );
   const [loadingState, setLoadingState] = useState('idle');
 
-  useEffect(() => {
-    triggerSearch(specieName, page);
-  }, [specieName, page]);
-
   const triggerSearch = (specieName: string, page: number) => {
     setSpeciesList(null);
     setLoadingState('loading');
@@ -32,6 +28,10 @@ const useFetchSpecies = ({ specieName, page }: useFetchSpeciesProps) => {
         setLoadingState('error');
       });
   };
+
+  useEffect(() => {
+    triggerSearch(specieName, page);
+  }, [specieName, page]);
 
   return { speciesList, loadingState };
 };
