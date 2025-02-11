@@ -15,12 +15,12 @@ function SpeciesLookup() {
 
   const handleSearch = (specieName: string) => {
     setSpecieName(specieName);
+    navigate(`/?page=1&term=${specieName}`);
   };
 
   useEffect(() => {
     localStorage.setItem('specieName', specieName);
-    navigate(`/?page=1&term=${specieName}`);
-  }, [navigate, specieName]);
+  }, [specieName]);
 
   return (
     <>
