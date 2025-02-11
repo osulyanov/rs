@@ -1,7 +1,7 @@
 import SpeciesList from '../components/species-list';
 import SearchForm from '../components/search-form';
 import { useEffect, useState } from 'react';
-import useFetchSpecies from '../hooks/use-fetch-species.ts';
+import useFetchSpecies from '../hooks/use-fetch-species';
 import { useNavigate, useSearchParams } from 'react-router';
 
 function SpeciesLookup() {
@@ -20,7 +20,7 @@ function SpeciesLookup() {
   useEffect(() => {
     localStorage.setItem('specieName', specieName);
     navigate(`/?page=1&term=${specieName}`);
-  }, [specieName]);
+  }, [navigate, specieName]);
 
   return (
     <>

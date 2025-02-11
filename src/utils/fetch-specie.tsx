@@ -9,6 +9,7 @@ export interface SpecieResult {
   average_lifespan: string;
   homeworld: string;
   language: string;
+  [key: string]: string;
 }
 
 const fetchSpecie = async (url: string): Promise<SpecieResult> => {

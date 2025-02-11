@@ -22,7 +22,9 @@ a {
   text-decoration: none;
 }
 
-a.link, a:hover, a.active {
+a.link,
+a:hover,
+a.active {
   text-decoration: underline;
 }
 
@@ -115,7 +117,9 @@ body::after {
   font-size: 1.2rem;
 }
 
-.items-column, .details-column, .message-box {
+.items-column,
+.details-column,
+.message-box {
   padding: 1rem;
 }
 
@@ -147,7 +151,7 @@ body::after {
   border: none;
   color: var(--text-color);
   cursor: pointer;
-  font-family: "VT323", monospace;
+  font-family: 'VT323', monospace;
   font-size: 1rem;
   padding: 0 0.5rem;
   float: right;
@@ -226,7 +230,8 @@ body::after {
     font-size: 0.9rem;
   }
 
-  .items-column, .details-column {
+  .items-column,
+  .details-column {
     width: 100%;
     border-right: none;
   }
