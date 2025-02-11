@@ -7,7 +7,7 @@ interface SpeciesListItemsProps {
 
 function SpeciesListItems({ speciesList }: SpeciesListItemsProps) {
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page');
+  const page = searchParams.get('page') ?? '1';
   const term = searchParams.get('term');
   const navigate = useNavigate();
 
