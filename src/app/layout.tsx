@@ -1,12 +1,19 @@
 import Header from './header';
+import ThemeSwitcher from './theme-switcher';
 import { Outlet } from 'react-router';
+import { ThemeContext } from '../context/theme-context';
+import { useState } from 'react';
 
 function Layout() {
+  const [theme, setTheme] = useState('light');
   return (
-    <div className="container">
-      <Header />
-      <Outlet />
-    </div>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <ThemeSwitcher />
+      <div className={`container${theme === 'light' ? ' light-theme' : ''}`}>
+        <Header />
+        <Outlet />
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
