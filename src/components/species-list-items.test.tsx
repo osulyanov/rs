@@ -22,7 +22,7 @@ const mockSpeciesList = [
 ];
 
 describe('SpeciesListItems', () => {
-  test('renders relevant species data', () => {
+  it('renders relevant species data', () => {
     render(
       <MemoryRouter>
         <SpeciesListItems speciesList={mockSpeciesList} />
@@ -33,7 +33,7 @@ describe('SpeciesListItems', () => {
     expect(screen.getByText(/Droid/)).toBeInTheDocument();
   });
 
-  test('clicking on a species opens the specie-details component', () => {
+  it('clicking on a species opens the specie-details component', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -50,7 +50,7 @@ describe('SpeciesListItems', () => {
     expect(screen.getByText(/Specie Details/)).toBeInTheDocument();
   });
 
-  test('clicking triggers an additional API call to fetch detailed information', async () => {
+  it('clicking triggers an additional API call to fetch detailed information', async () => {
     (fetchSpecie as jest.Mock).mockResolvedValueOnce({
       ...mockSpeciesList[0],
     });

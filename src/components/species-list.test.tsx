@@ -24,7 +24,7 @@ describe('SpeciesList', () => {
     previous: null,
   };
 
-  test('renders the specified number of cards', async () => {
+  it('renders the specified number of cards', async () => {
     render(
       <Router>
         <SpeciesList speciesList={mockSpeciesList} loadingState="loaded" />
@@ -34,7 +34,7 @@ describe('SpeciesList', () => {
     expect(cards).toHaveLength(mockSpeciesList.results.length);
   });
 
-  test('displays appropriate message if no cards are present', async () => {
+  it('displays appropriate message if no cards are present', async () => {
     render(
       <Router>
         <SpeciesList
