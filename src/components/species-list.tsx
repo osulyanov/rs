@@ -15,18 +15,19 @@ function SpeciesList({ speciesList, error, isLoading }: SpeciesListProps) {
   return (
     <>
       <div className="data-report">
-        {isLoading && <MessageBox message="Loading..." />}
-        {error && <MessageBox message="Error fetching species" />}
-        {speciesList !== undefined &&
-          (speciesList.results.length == 0 ? (
-            <MessageBox message="No species found" />
-          ) : (
-            <>
-              <SpeciesListItems speciesList={speciesList.results} />
-            </>
-          ))}
+        {error ? (
+          <MessageBox message="Error fetching species" />
+        ) : isLoading ? (
+          <MessageBox message="Loading..." />
+        ) : speciesList && speciesList.results.length == 0 ? (
+          <MessageBox message="No species found" />
+        ) : speciesList && speciesList.results.length > 0 ? (
+          <>
+            <SpeciesListItems speciesList={speciesList.results} />
+          </>
+        ) : null}
       </div>
-      {speciesList !== undefined && <Pagination speciesList={speciesList} />}
+      {!isLoading && speciesList && <Pagination speciesList={speciesList} />}
     </>
   );
 }

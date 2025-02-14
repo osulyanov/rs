@@ -14,7 +14,7 @@ function SpeciesLookup() {
   const {
     data: speciesList,
     error,
-    isLoading,
+    isFetching: isLoading,
   } = useGetSpeciesListQuery({ specieName, page });
 
   const handleSearch = (specieName: string) => {

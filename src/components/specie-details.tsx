@@ -1,10 +1,14 @@
 import ClearButton from './clear-button';
 import { useParams } from 'react-router';
-import useFetchSpecie from '../hooks/use-fetch-specie';
+import { useGetSpecieQuery } from '../services/sw-api';
 
 function SpecieDetails() {
   const { specieId } = useParams();
-  const { specie, loadingState } = useFetchSpecie(specieId as string);
+  const {
+    data: specie,
+    error,
+    isFetching: isLoading,
+  } = useGetSpecieQuery(specieId as string);
 
   const formatKey = (key: string) => {
     return key
@@ -19,11 +23,9 @@ function SpecieDetails() {
         SPECIE DETAILS
         <ClearButton />
       </div>
-      {loadingState === 'loading' && <div className="cell">Loading...</div>}
-      {loadingState === 'error' && (
-        <div className="cell">Error fetching specie</div>
-      )}
-      {loadingState === 'idle' && specie && (
+      {isLoading && <div className="cell">Loading...</div>}
+      {error && <div className="cell">Error fetching specie</div>}
+      {specie && (
         <>
           {[
             'name',
