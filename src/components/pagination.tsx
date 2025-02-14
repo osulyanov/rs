@@ -1,5 +1,5 @@
-import { SpeciesListResult } from '../utils/fetch-species-list';
 import { Link, useSearchParams } from 'react-router';
+import { SpeciesListResult } from '../services/sw-api';
 
 function Pagination({ speciesList }: { speciesList: SpeciesListResult }) {
   const [searchParams] = useSearchParams();

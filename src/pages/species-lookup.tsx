@@ -1,8 +1,8 @@
 import SpeciesList from '../components/species-list';
 import SearchForm from '../components/search-form';
 import { useEffect, useState } from 'react';
-import useFetchSpecies from '../hooks/use-fetch-species';
 import { useNavigate, useSearchParams } from 'react-router';
+import { useGetSpeciesListQuery } from '../services/sw-api';
 
 function SpeciesLookup() {
   const navigate = useNavigate();
@@ -11,7 +11,11 @@ function SpeciesLookup() {
   const page = parseInt(searchParams.get('page') || '1');
   const savedSpecieName = localStorage.getItem('specieName');
   const [specieName, setSpecieName] = useState(savedSpecieName || '');
-  const { speciesList, loadingState } = useFetchSpecies({ specieName, page });
+  const {
+    data: speciesList,
+    error,
+    isLoading,
+  } = useGetSpeciesListQuery({ specieName, page });
 
   const handleSearch = (specieName: string) => {
     setSpecieName(specieName);
@@ -25,7 +29,11 @@ function SpeciesLookup() {
   return (
     <>
       <SearchForm setSpecieName={handleSearch} defaultValue={specieName} />
-      <SpeciesList speciesList={speciesList} loadingState={loadingState} />
+      <SpeciesList
+        speciesList={speciesList}
+        error={error}
+        isLoading={isLoading}
+      />
     </>
   );
 }

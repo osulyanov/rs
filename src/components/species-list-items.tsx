@@ -1,5 +1,5 @@
-import { SpeciesResult } from '../utils/fetch-species-list';
 import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router';
+import { SpeciesResult } from '../services/sw-api';
 
 interface SpeciesListItemsProps {
   speciesList: SpeciesResult[];

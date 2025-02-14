@@ -1,22 +1,23 @@
-import { SpeciesListResult } from '../utils/fetch-species-list';
 import MessageBox from './message-box';
 import SpeciesListItems from './species-list-items';
 import Pagination from './pagination';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
+import { SpeciesListResult } from '../services/sw-api';
 
 interface SpeciesListProps {
-  speciesList: SpeciesListResult | null;
-  loadingState: string;
+  speciesList: SpeciesListResult | undefined;
+  error: FetchBaseQueryError | SerializedError | undefined;
+  isLoading: boolean;
 }
 
-function SpeciesList({ speciesList, loadingState }: SpeciesListProps) {
+function SpeciesList({ speciesList, error, isLoading }: SpeciesListProps) {
   return (
     <>
       <div className="data-report">
-        {loadingState === 'loading' && <MessageBox message="Loading..." />}
-        {loadingState === 'error' && (
-          <MessageBox message="Error loading species list" />
-        )}
-        {speciesList !== null &&
+        {isLoading && <MessageBox message="Loading..." />}
+        {error && <MessageBox message="Error fetching species" />}
+        {speciesList !== undefined &&
           (speciesList.results.length == 0 ? (
             <MessageBox message="No species found" />
           ) : (
@@ -25,7 +26,7 @@ function SpeciesList({ speciesList, loadingState }: SpeciesListProps) {
             </>
           ))}
       </div>
-      {speciesList !== null && <Pagination speciesList={speciesList} />}
+      {speciesList !== undefined && <Pagination speciesList={speciesList} />}
     </>
   );
 }
