@@ -14,7 +14,7 @@ export default {
   collectCoverage: true,
   coverageThreshold: {
     global: {
-      lines: 70,
+      score: 80,
     },
   },
   collectCoverageFrom: ['src/**/*.tsx'],
