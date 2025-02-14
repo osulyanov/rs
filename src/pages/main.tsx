@@ -9,7 +9,7 @@ createRoot(
   document.getElementById('root') ?? document.createElement('div')
 ).render(
   <StrictMode>
-    <BrowserRouter basename="/osulyanov-REACT2025Q1">
+    <BrowserRouter basename="/">
       <Provider store={store}>
         <App />
       </Provider>
