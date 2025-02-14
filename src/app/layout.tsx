@@ -5,7 +5,7 @@ import { ThemeContext } from '../context/theme-context';
 import { useState } from 'react';
 
 function Layout() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <ThemeSwitcher />
