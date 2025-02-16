@@ -1,9 +1,9 @@
-import MessageBox from './message-box';
+import MessageBox from '../../components/message-box';
 import SpeciesListItems from './species-list-items';
-import Pagination from './pagination';
+import Pagination from '../../components/pagination';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
-import { SpeciesListResult } from '../services/sw-api';
+import { SpeciesListResult } from '../../services/sw-api';
 
 interface SpeciesListProps {
   speciesList: SpeciesListResult | undefined;

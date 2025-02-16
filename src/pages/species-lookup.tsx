@@ -1,5 +1,5 @@
-import SpeciesList from '../components/species-list';
-import SearchForm from '../components/search-form';
+import SpeciesList from '../features/species/species-list';
+import SearchForm from '../features/species/search-form';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useGetSpeciesListQuery } from '../services/sw-api';

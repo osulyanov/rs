@@ -1,6 +1,6 @@
-import ClearButton from './clear-button';
+import ClearButton from '../../components/clear-button';
 import { useParams } from 'react-router';
-import { useGetSpecieQuery } from '../services/sw-api';
+import { useGetSpecieQuery } from '../../services/sw-api';
 
 function SpecieDetails() {
   const { specieId } = useParams();
