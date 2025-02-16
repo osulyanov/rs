@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import Pagination from './pagination';
-import { SpeciesListResult } from '../utils/fetch-species-list';
+import { SpeciesListResult } from '../services/sw-api';
 
 const mockSpeciesList: SpeciesListResult = {
   count: 20,

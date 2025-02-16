@@ -5,7 +5,7 @@ import MessageBox from '../components/message-box';
 import { Route, Routes } from 'react-router';
 import NotFound from './not-found';
 import Layout from './layout';
-import SpecieDetails from '../components/specie-details';
+import SpecieDetails from '../features/species/specie-details';
 
 function App() {
   return (

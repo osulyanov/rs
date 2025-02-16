@@ -11,7 +11,7 @@ jest.mock('react-router', () => ({
 }));
 
 describe('Layout', () => {
-  test('renders Header component', () => {
+  it('renders Header component', () => {
     render(<Layout />);
     expect(screen.getByText('Mocked Header')).toBeInTheDocument();
   });

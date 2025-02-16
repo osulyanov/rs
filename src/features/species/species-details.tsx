@@ -1,4 +1,4 @@
-import { SpeciesResult } from '../utils/fetch-species-list';
+import { SpeciesResult } from '../../services/sw-api';
 
 interface SpeciesDetailsProps {
   speciesList?: SpeciesResult[];

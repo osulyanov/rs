@@ -1,81 +1,143 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
 import SpeciesLookup from './species-lookup';
-import useFetchSpecies from '../hooks/use-fetch-species';
+import { useGetSpeciesListQuery } from '../services/sw-api';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-jest.mock('../hooks/use-fetch-species', () => ({
-  __esModule: true,
-  default: jest.fn(),
+jest.mock('../features/species/search-form', () => {
+  const MockSearchForm = ({
+    setSpecieName,
+  }: {
+    setSpecieName: (name: string) => void;
+  }) => (
+    <div>
+      Mocked SearchForm
+      <button onClick={() => setSpecieName('Human')}>Search</button>
+    </div>
+  );
+  MockSearchForm.displayName = 'MockSearchForm';
+  return MockSearchForm;
+});
+
+jest.mock('../features/species/species-list', () => {
+  const MockSpeciesList = ({
+    speciesList,
+    error,
+    isLoading,
+  }: {
+    speciesList: unknown[];
+    error: unknown;
+    isLoading: boolean;
+  }) => (
+    <div>
+      Mocked SpeciesList
+      {isLoading && <div>Loading...</div>}
+      {(error && <div>Error</div>) as JSX.Element}
+      {speciesList && <div>Species List</div>}
+    </div>
+  );
+  MockSpeciesList.displayName = 'MockSpeciesList';
+  return MockSpeciesList;
+});
+
+jest.mock('../services/sw-api', () => ({
+  useGetSpeciesListQuery: jest.fn(),
 }));
 
 describe('SpeciesLookup', () => {
-  let consoleErrorMock: jest.SpyInstance;
+  let consoleLogSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    localStorage.clear();
     jest.clearAllMocks();
-    consoleErrorMock = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    consoleErrorMock.mockRestore();
+    consoleLogSpy.mockRestore();
   });
 
-  it('saves the entered value to local storage when the Search button is clicked', async () => {
-    (useFetchSpecies as jest.Mock).mockReturnValue({
-      speciesList: {
-        count: 1,
-        next: null,
-        previous: null,
-        results: [
-          { name: 'Wookie', url: '', classification: '', designation: '' },
-        ],
-      },
-      loadingState: 'idle',
+  test('renders SearchForm and SpeciesList', () => {
+    (useGetSpeciesListQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: null,
+      isFetching: false,
     });
 
     render(
-      <MemoryRouter>
+      <Router>
         <SpeciesLookup />
-      </MemoryRouter>
+      </Router>
     );
 
-    const input = screen.getByPlaceholderText('[ENTER SPECIE]');
-    const searchButton = screen.getByText('> SEARCH');
-
-    await act(async () => {
-      fireEvent.change(input, { target: { value: 'Wookie' } });
-      fireEvent.click(searchButton);
-    });
-
-    expect(localStorage.getItem('specieName')).toBe('Wookie');
+    expect(screen.getByText(/Mocked SearchForm/)).toBeInTheDocument();
+    expect(screen.getByText(/Mocked SpeciesList/)).toBeInTheDocument();
   });
 
-  it('retrieves the value from local storage upon mounting', async () => {
-    localStorage.setItem('specieName', 'Wookie');
-    (useFetchSpecies as jest.Mock).mockReturnValue({
-      speciesList: {
-        count: 1,
-        next: null,
-        previous: null,
-        results: [
-          { name: 'Wookie', url: '', classification: '', designation: '' },
-        ],
-      },
-      loadingState: 'idle',
+  test('displays loading state', () => {
+    (useGetSpeciesListQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: null,
+      isFetching: true,
     });
 
-    await act(async () => {
-      render(
-        <MemoryRouter>
-          <SpeciesLookup />
-        </MemoryRouter>
-      );
+    render(
+      <Router>
+        <SpeciesLookup />
+      </Router>
+    );
+
+    expect(screen.getByText(/Loading.../)).toBeInTheDocument();
+  });
+
+  test('displays error state', () => {
+    (useGetSpeciesListQuery as jest.Mock).mockReturnValue({
+      data: null,
+      error: { status: 'FETCH_ERROR', data: undefined, error: 'Error' },
+      isFetching: false,
     });
 
-    const input = screen.getByPlaceholderText('[ENTER SPECIE]');
-    expect(input).toHaveValue('Wookie');
+    render(
+      <Router>
+        <SpeciesLookup />
+      </Router>
+    );
+
+    expect(screen.getByText(/Error/)).toBeInTheDocument();
+  });
+
+  test('displays species list', () => {
+    (useGetSpeciesListQuery as jest.Mock).mockReturnValue({
+      data: { count: 1, results: [{ name: 'Human' }] },
+      error: null,
+      isFetching: false,
+    });
+
+    render(
+      <Router>
+        <SpeciesLookup />
+      </Router>
+    );
+
+    expect(screen.getByText(/Species List/)).toBeInTheDocument();
+  });
+
+  test('handles search', () => {
+    (useGetSpeciesListQuery as jest.Mock).mockReturnValue({
+      data: { count: 1, results: [{ name: 'Human' }] },
+      error: null,
+      isFetching: false,
+    });
+
+    render(
+      <Router>
+        <SpeciesLookup />
+      </Router>
+    );
+
+    const searchButtons = screen.getAllByText(/Search/);
+    fireEvent.click(searchButtons[0]);
+
+    console.log(document.body.innerHTML);
+
+    expect(screen.getByText(/Species List/)).toBeInTheDocument();
   });
 });
