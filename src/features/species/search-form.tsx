@@ -12,7 +12,7 @@ function SearchForm({ setSpecieName, defaultValue }: SearchFormProps) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="input-group">
+    <form onSubmit={onSubmit} className="input-group" data-testid="search-form">
       <input
         type="text"
         className="input-field"
