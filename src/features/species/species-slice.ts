@@ -1,7 +1,7 @@
 import { SpeciesResult } from '../../services/sw-api';
 import { createSlice } from '@reduxjs/toolkit';
 
-interface SpeciesState {
+export interface SpeciesState {
   currentItems: SpeciesResult[];
   totalCount: number;
   isLoading: boolean;
@@ -41,3 +41,5 @@ export const speciesSlice = createSlice({
 
 export const { selectItem, unselectItem, unselectAllItems } =
   speciesSlice.actions;
+
+export default speciesSlice.reducer;
