@@ -3,7 +3,6 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import SpecieDetails from './specie-details';
 import { useGetSpecieQuery } from '../../services/sw-api';
 
-// Mock the useGetSpecieQuery hook
 jest.mock('../../services/sw-api', () => ({
   useGetSpecieQuery: jest.fn(),
 }));

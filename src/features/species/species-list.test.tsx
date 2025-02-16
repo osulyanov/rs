@@ -3,7 +3,6 @@ import SpeciesList from './species-list';
 import { SpeciesListResult } from '../../services/sw-api';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-// Mock the components
 jest.mock('./species-list-items', () => {
   const MockSpeciesListItems = () => <div>Mocked SpeciesListItems</div>;
   MockSpeciesListItems.displayName = 'MockSpeciesListItems';
