@@ -275,6 +275,10 @@ body::after {
   box-shadow: 0 -5px 10px var(--glow-color);
 }
 
+.light-theme .flyout span {
+  color: var(--text-color);
+}
+
 .flyout-button {
   background-color: var(--bg-color);
   border: 2px solid var(--text-color);
