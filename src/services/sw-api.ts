@@ -8,11 +8,17 @@ export type SpeciesListResult = {
 };
 
 export type SpeciesResult = {
+  id: string;
   url: string;
   name: string;
   classification: string;
   designation: string;
-  average_height?: string;
+  average_height: string;
+  skin_colors: string;
+  hair_colors: string;
+  eye_colors: string;
+  average_lifespan: string;
+  language: string;
 };
 
 export interface SpecieResult {
@@ -28,6 +34,9 @@ export interface SpecieResult {
   [key: string]: string;
 }
 
+const extractIdFromUrl = (url: string): string => {
+  return url.split('/').slice(-2)[0];
+};
 export const swApi = createApi({
   reducerPath: 'swapi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
@@ -38,6 +47,15 @@ export const swApi = createApi({
     >({
       query: ({ specieName, page }) =>
         `species/?search=${specieName}&page=${page}`,
+      transformResponse: (response: SpeciesListResult) => {
+        return {
+          ...response,
+          results: response.results.map((specie) => ({
+            ...specie,
+            id: extractIdFromUrl(specie.url),
+          })),
+        };
+      },
     }),
     getSpecie: builder.query<SpecieResult, string>({
       query: (specieId) => `species/${specieId}/`,

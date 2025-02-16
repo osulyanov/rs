@@ -1,11 +1,16 @@
 import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router';
 import { SpeciesResult } from '../../services/sw-api';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { ChangeEvent } from 'react';
+import { selectItem, unselectItem } from './species-slice';
 
 interface SpeciesListItemsProps {
-  speciesList: SpeciesResult[];
+  speciesListResults: SpeciesResult[];
 }
 
-function SpeciesListItems({ speciesList }: SpeciesListItemsProps) {
+function SpeciesListItems({ speciesListResults }: SpeciesListItemsProps) {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') ?? '1';
   const term = searchParams.get('term');
@@ -18,15 +23,39 @@ function SpeciesListItems({ speciesList }: SpeciesListItemsProps) {
     event.stopPropagation();
   };
 
+  const selectedItems = useSelector(
+    (state: RootState) => state.species.selectedItems
+  );
+
+  const isItemSelected = (id: string) => !!selectedItems[id];
+
+  const handleCheckboxChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    specie: SpeciesResult
+  ) => {
+    if (event.target.checked) {
+      dispatch(selectItem(specie));
+    } else {
+      dispatch(unselectItem(specie));
+    }
+  };
+
   return (
     <>
       <div className="items-column" onClick={handleItemsColumnClick}>
         <div className="column-header">SPECIE</div>
-        {speciesList?.map((specie, index) => (
+        {speciesListResults?.map((specie, index) => (
           <div key={index} className="cell">
+            <input
+              type={'checkbox'}
+              checked={isItemSelected(specie.id)}
+              onChange={(event) => {
+                handleCheckboxChange(event, specie);
+              }}
+            />{' '}
             <NavLink
               to={{
-                pathname: `/species/${specie.url.split('/').slice(-2)[0]}`,
+                pathname: `/species/${specie.id}`,
                 search: `?page=${page}${term ? `&term=${term} ` : ''}`,
               }}
               onClick={handleLinkClick}

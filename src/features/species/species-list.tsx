@@ -4,6 +4,7 @@ import Pagination from '../../components/pagination';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import { SpeciesListResult } from '../../services/sw-api';
+import { Flyout } from './flyout';
 
 interface SpeciesListProps {
   speciesList: SpeciesListResult | undefined;
@@ -23,11 +24,12 @@ function SpeciesList({ speciesList, error, isLoading }: SpeciesListProps) {
           <MessageBox message="No species found" />
         ) : speciesList && speciesList.results.length > 0 ? (
           <>
-            <SpeciesListItems speciesList={speciesList.results} />
+            <SpeciesListItems speciesListResults={speciesList.results} />
           </>
         ) : null}
       </div>
       {!isLoading && speciesList && <Pagination speciesList={speciesList} />}
+      <Flyout />
     </>
   );
 }
