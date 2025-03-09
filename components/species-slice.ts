@@ -27,7 +27,6 @@ export const speciesSlice = createSlice({
     },
     unselectItem: (state, action) => {
       const item = action.payload;
-      // below workaround for TS error
       const newSelectedItems = { ...state.selectedItems };
       state.selectedItems = Object.fromEntries(
         Object.entries(newSelectedItems).filter(([key]) => key !== item.id)

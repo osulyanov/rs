@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { swApi } from '@components/sw-api'; // Adjust the import path as necessary
+import { swApi } from '@components/sw-api';
 import { speciesSlice } from '@components/species-slice';
 
 export const store = configureStore({
@@ -13,7 +13,6 @@ export const store = configureStore({
   },
 });
 
-// Optional: Enable refetchOnFocus/refetchOnReconnect behaviors
 setupListeners(store.dispatch);
 
 export type AppDispatch = typeof store.dispatch;
