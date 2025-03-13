@@ -87,6 +87,18 @@ main {
   gap: 40px;
 }
 
+.nav-link {
+  color: #a0ff70;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-right: 30px;
+}
+.nav-link:hover {
+  color: #39ff14;
+  text-decoration: none;
+}
+
 .form-container, .results-container {
   background-color: rgba(10, 26, 10, 0.7);
   border: 2px solid #a0ff70;

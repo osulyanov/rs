@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 export const MainPage = () => {
   interface Submission {
     id: string;
@@ -13,6 +15,12 @@ export const MainPage = () => {
 
   return (
     <div className="results-container">
+      <Link to={'/react-hook-form'} className="nav-link">
+        React Hook Form &gt;
+      </Link>
+      <Link to={'/uncontrolled-form'} className="nav-link">
+        Uncontrolled Form &gt;
+      </Link>
       <h2>Form Submissions</h2>
       {submissions.length === 0 && (
         <div className="empty-state">No submissions yet</div>
