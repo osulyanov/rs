@@ -1,6 +1,6 @@
 import { BackButton } from '../components/back-button';
 
-export const ReactHookForm = () => {
+export const ReactHookFormPage = () => {
   return (
     <div className="form-container">
       <BackButton />

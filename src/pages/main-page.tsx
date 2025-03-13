@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { EmptyState } from '../components/empty-state';
 
 export const MainPage = () => {
   interface Submission {
@@ -15,16 +16,14 @@ export const MainPage = () => {
 
   return (
     <div className="results-container">
-      <Link to={'/react-hook-form'} className="nav-link">
-        React Hook Form &gt;
-      </Link>
       <Link to={'/uncontrolled-form'} className="nav-link">
         Uncontrolled Form &gt;
       </Link>
+      <Link to={'/react-hook-form'} className="nav-link">
+        React Hook Form &gt;
+      </Link>
       <h2>Form Submissions</h2>
-      {submissions.length === 0 && (
-        <div className="empty-state">No submissions yet</div>
-      )}
+      {submissions.length === 0 && <EmptyState />}
       {submissions.map((submission) => (
         <div className="results-grid" key={submission.id}>
           <div className="result-tile">
