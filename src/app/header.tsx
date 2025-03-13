@@ -6,5 +6,9 @@ export const Header = () => {
 |  _ <  __/ (_| | (__| |_  |  _| (_) | |  | | | | | \\__ \\
 |_| \\_\\___|\\__,_|\\___|\\__| |_|  \\___/|_|  |_| |_| |_|___/`;
 
-  return <pre className={'ascii-title'}>{asciiHeader}</pre>;
+  return (
+    <header>
+      <pre className={'ascii-title'}>{asciiHeader}</pre>
+    </header>
+  );
 };
