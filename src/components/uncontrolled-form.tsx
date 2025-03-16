@@ -34,12 +34,10 @@ export const UncontrolledForm = () => {
     age: z.coerce.number().int().min(1).max(120),
     email: z.string().email(),
     password: z.string().nonempty(),
-    passwordConfirmation: z
-      .string()
-      .refine((data) => data === password, {
-        message: "Passwords don't match",
-        path: ['passwordConfirmation'],
-      }),
+    passwordConfirmation: z.string().refine((data) => data === password, {
+      message: "Passwords don't match",
+      path: ['passwordConfirmation'],
+    }),
     gender: z.enum(genders),
     country: z.string(),
     profilePicture: z
