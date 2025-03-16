@@ -1,8 +1,4 @@
-export const fileToBase64 = (file: File | null): Promise<string | null> => {
-  if (!file) {
-    return Promise.resolve(null);
-  }
-
+export const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -10,7 +6,7 @@ export const fileToBase64 = (file: File | null): Promise<string | null> => {
       if (typeof reader.result === 'string') {
         resolve(reader.result);
       } else {
-        resolve(null);
+        resolve('');
       }
     };
 

@@ -6,7 +6,6 @@ export interface SubmissionState {
   age: number;
   email: string;
   password: string;
-  passwordConfirmation: string;
   gender: string;
   country: string;
   createdAt: string;
