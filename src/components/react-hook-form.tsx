@@ -4,8 +4,11 @@ import { useForm } from 'react-hook-form';
 import { ValidationError } from './validation-error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, FormData } from '../schemas/form-schema';
+import { useSelector } from 'react-redux';
+import { selectCountries } from '../slices/countries-slice';
 
 export const ReactHookForm = () => {
+  const countries = useSelector(selectCountries);
   const {
     register,
     handleSubmit,
@@ -94,9 +97,9 @@ export const ReactHookForm = () => {
           {...register('country')}
         />
         <datalist id="countries">
-          <option value="United States" />
-          <option value="Canada" />
-          <option value="Mexico" />
+          {countries.map((country) => (
+            <option value={country} key={country} />
+          ))}
         </datalist>
         <ValidationError text={errors.country?.message as string} />
       </div>
@@ -106,7 +109,7 @@ export const ReactHookForm = () => {
         <input
           type="file"
           id="profile-picture"
-          accept="image/*"
+          accept="image/jpeg, image/png"
           {...register('profilePicture')}
         />
         <ValidationError text={errors.profilePicture?.message as string} />
