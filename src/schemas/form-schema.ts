@@ -40,14 +40,25 @@ export const formSchema = z
     }),
     country: z.string().nonempty({ message: 'Please select a country' }),
     profilePicture: z
-      .custom<File>()
-      .refine((file) => file && file.size > 0, {
-        message: 'Please upload a profile picture',
-      })
+      .any()
+      .optional()
       .refine(
-        (file) =>
-          file.size <= maxFileSizeMb * 1024 * 1024 &&
-          acceptedFileTypes.includes(file.type),
+        (value) => {
+          // Skip validation if no file is selected
+          if (!value || (value instanceof FileList && value.length === 0)) {
+            return true;
+          }
+
+          // If we have a FileList, get the first file
+          const file = value instanceof FileList ? value[0] : value;
+
+          // Check if it's a valid file
+          return (
+            file &&
+            file.size <= maxFileSizeMb * 1024 * 1024 &&
+            acceptedFileTypes.includes(file.type)
+          );
+        },
         {
           message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
         }
