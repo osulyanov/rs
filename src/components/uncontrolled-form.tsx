@@ -8,10 +8,12 @@ import { PasswordStrengthMeter } from './password-strength-meter';
 import { UncontrolledInput } from './uncontrolled-form-elements/uncontrolled-input';
 import { ValidationError } from './validation-error';
 import { addSubmission, SubmissionState } from '../slices/submissions-slice';
+import { useNavigate } from 'react-router';
 
 export const UncontrolledForm = () => {
   const countries = useSelector(selectCountries);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const genders = ['male', 'female', 'other'] as const;
   const nameRegexp = /^[\p{Lu}]+/u;
   const maxFileSizeMb = 5;
@@ -67,8 +69,10 @@ export const UncontrolledForm = () => {
       const submission = {
         ...rest,
         profilePicture: profilePictureBase64,
+        createdAt: new Date().toISOString(),
       };
       dispatch(addSubmission(submission as SubmissionState));
+      navigate('/');
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.reduce((acc, error) => {
