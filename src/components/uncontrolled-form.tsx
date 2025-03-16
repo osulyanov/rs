@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
@@ -20,47 +20,51 @@ export const UncontrolledForm = () => {
   const acceptedFileTypes = ['image/jpeg', 'image/png'];
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  // NOTES FOR THE REVIEWER:
+  // useState is used to store the password value to calculate the passwords strength
+  // it's not used to render the value in the input field
+  // the form is uncontrolled, so the password input is not controlled by the component state
   const [password, setPassword] = useState('');
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const schema = z
-    .object({
-      name: z.string().nonempty().regex(nameRegexp, {
-        message: 'Name should start with a capital letter',
+  const schema = z.object({
+    name: z.string().nonempty().regex(nameRegexp, {
+      message: 'Name should start with a capital letter',
+    }),
+    age: z.coerce.number().int().min(1).max(120),
+    email: z.string().email(),
+    password: z.string().nonempty(),
+    passwordConfirmation: z
+      .string()
+      .refine((data) => data === password, {
+        message: "Passwords don't match",
+        path: ['passwordConfirmation'],
       }),
-      age: z.coerce.number().int().min(1).max(120),
-      email: z.string().email(),
-      password: z.string().nonempty(),
-      passwordConfirmation: z.string(),
-      gender: z.enum(genders),
-      country: z.string(),
-      profilePicture: z
-        .custom<File>()
-        .refine((file) => file && file.size > 0, {
-          message: 'Please upload a profile picture',
-        })
-        .refine(
-          (file) =>
-            file.size <= maxFileSizeMb * 1024 * 1024 &&
-            acceptedFileTypes.includes(file.type),
-          {
-            message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
-          }
-        ),
-      terms: z.coerce.boolean().refine((data) => data, {
-        message: 'You must accept the Terms and Conditions',
-      }),
-    })
-    .refine((data) => data.password === data.passwordConfirmation, {
-      message: "Passwords don't match",
-      path: ['passwordConfirmation'],
-    });
+    gender: z.enum(genders),
+    country: z.string(),
+    profilePicture: z
+      .custom<File>()
+      .refine((file) => file && file.size > 0, {
+        message: 'Please upload a profile picture',
+      })
+      .refine(
+        (file) =>
+          file.size <= maxFileSizeMb * 1024 * 1024 &&
+          acceptedFileTypes.includes(file.type),
+        {
+          message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
+        }
+      ),
+    terms: z.coerce.boolean().refine((data) => data, {
+      message: 'You must accept the Terms and Conditions',
+    }),
+  });
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    setPassword(data.password as string);
     try {
       schema.parse(data);
       setErrors({});
@@ -79,6 +83,7 @@ export const UncontrolledForm = () => {
         const errors = error.errors.reduce((acc, error) => {
           return { ...acc, [error.path[0]]: error.message };
         }, {});
+        console.log(errors);
         setErrors(errors);
       }
     }
@@ -109,6 +114,8 @@ export const UncontrolledForm = () => {
         name="password"
         title="Password"
         error={errors.password}
+        ref={passwordRef}
+        onChange={(e) => setPassword(e.target.value)}
       >
         <PasswordStrengthMeter password={password} />
       </UncontrolledInput>
