@@ -16,7 +16,7 @@ const root = createRoot(rootElement);
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter basename="/osulyanov-REACT2025Q1">
+      <BrowserRouter basename="/osulyanov-REACT2025Q1/dist/">
         <App />
       </BrowserRouter>
     </Provider>
