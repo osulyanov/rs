@@ -22,8 +22,8 @@ export const UncontrolledInput = ({
         ref={props.ref}
         onChange={props.onChange}
       />
-      {(!children || props.error) && <ValidationError text={props.error} />}
-      {!props.error && children}
+      {children}
+      <ValidationError text={props.error} />
     </div>
   );
 };
