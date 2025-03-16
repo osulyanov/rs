@@ -1,20 +1,22 @@
 import { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { selectCountries, addCountry } from '../slices/countries-slice';
-import { fileToBase64 } from '../utils/file-utils';
+import { selectCountries } from '../slices/countries-slice';
+
 import { PasswordStrengthMeter } from './password-strength-meter';
 import { UncontrolledInput } from './uncontrolled-input';
 import { ValidationError } from './validation-error';
-import { addSubmission, SubmissionState } from '../slices/submissions-slice';
-import { useNavigate } from 'react-router';
-import { formSchema } from '../schemas/form-schema';
 
-export const UncontrolledForm = () => {
+import { formSchema } from '../schemas/form-schema';
+import { FormSubmissionData } from '../app/app';
+
+export const UncontrolledForm = ({
+  saveSubmission,
+}: {
+  saveSubmission: (data: FormSubmissionData) => Promise<void>;
+}) => {
   const countries = useSelector(selectCountries);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   // NOTES FOR THE REVIEWER:
@@ -32,18 +34,7 @@ export const UncontrolledForm = () => {
     try {
       formSchema.parse(data);
       setErrors({});
-      const { profilePicture, ...rest } = data;
-      const profilePictureBase64 = await fileToBase64(profilePicture as File);
-      const submission = {
-        ...rest,
-        profilePicture: profilePictureBase64,
-        createdAt: new Date().toISOString(),
-      } as SubmissionState;
-      dispatch(addSubmission(submission));
-      if (!countries.includes(submission.country)) {
-        dispatch(addCountry(submission.country));
-      }
-      navigate(`/${submission.createdAt}`);
+      await saveSubmission(data as FormSubmissionData);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.reduce((acc, error) => {

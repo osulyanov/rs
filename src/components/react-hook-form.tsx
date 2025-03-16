@@ -6,9 +6,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, FormData } from '../schemas/form-schema';
 import { useSelector } from 'react-redux';
 import { selectCountries } from '../slices/countries-slice';
+import { useRef, useCallback } from 'react';
+import { FormSubmissionData } from '../app/app';
 
-export const ReactHookForm = () => {
+export const ReactHookForm = ({
+  saveSubmission,
+}: {
+  saveSubmission: (data: FormSubmissionData) => Promise<void>;
+}) => {
   const countries = useSelector(selectCountries);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
@@ -22,15 +30,26 @@ export const ReactHookForm = () => {
 
   const password = watch('password', '');
 
-  const submit = (data: FormData) => {
-    console.log(data);
-  };
+  const submit = useCallback(
+    (data: FormData) => {
+      const fileInput = fileInputRef.current;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        saveSubmission({
+          ...data,
+          profilePicture: file,
+        });
+      } else {
+        saveSubmission(data);
+      }
+    },
+    [saveSubmission]
+  );
+
   return (
     <form noValidate={true} onSubmit={handleSubmit(submit)}>
       <ReactHookFormInput
-        register={register('name', {
-          onChange: () => console.log('Name changed'),
-        })}
+        register={register('name')}
         type="text"
         name="name"
         title="Name"
@@ -115,6 +134,10 @@ export const ReactHookForm = () => {
           id="profile-picture"
           accept="image/jpeg, image/png"
           {...register('profilePicture')}
+          ref={(e) => {
+            register('profilePicture').ref(e);
+            fileInputRef.current = e;
+          }}
         />
         <ValidationError text={errors.profilePicture?.message as string} />
       </div>

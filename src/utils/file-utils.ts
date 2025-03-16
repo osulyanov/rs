@@ -1,4 +1,8 @@
-export const fileToBase64 = (file: File): Promise<string> => {
+export const fileToBase64 = (file: File | Blob): Promise<string> => {
+  if (!file) {
+    return Promise.reject(new Error('Profile picture is required'));
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
