@@ -1,4 +1,4 @@
-import { ValidationError } from '../validation-error';
+import { ValidationError } from './validation-error';
 
 export const UncontrolledInput = ({
   children,

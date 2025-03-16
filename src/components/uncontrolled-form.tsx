@@ -5,19 +5,16 @@ import { z } from 'zod';
 import { selectCountries, addCountry } from '../slices/countries-slice';
 import { fileToBase64 } from '../utils/file-utils';
 import { PasswordStrengthMeter } from './password-strength-meter';
-import { UncontrolledInput } from './uncontrolled-form-elements/uncontrolled-input';
+import { UncontrolledInput } from './uncontrolled-input';
 import { ValidationError } from './validation-error';
 import { addSubmission, SubmissionState } from '../slices/submissions-slice';
 import { useNavigate } from 'react-router';
+import { formSchema } from '../schemas/form-schema';
 
 export const UncontrolledForm = () => {
   const countries = useSelector(selectCountries);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const genders = ['male', 'female', 'other'] as const;
-  const nameRegexp = /^[\p{Lu}]+/u;
-  const maxFileSizeMb = 5;
-  const acceptedFileTypes = ['image/jpeg', 'image/png'];
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   // NOTES FOR THE REVIEWER:
@@ -27,44 +24,13 @@ export const UncontrolledForm = () => {
   const [password, setPassword] = useState('');
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const schema = z.object({
-    name: z.string().nonempty().regex(nameRegexp, {
-      message: 'Name should start with a capital letter',
-    }),
-    age: z.coerce.number().int().min(1).max(120),
-    email: z.string().email(),
-    password: z.string().nonempty(),
-    passwordConfirmation: z.string().refine((data) => data === password, {
-      message: "Passwords don't match",
-      path: ['passwordConfirmation'],
-    }),
-    gender: z.enum(genders),
-    country: z.string(),
-    profilePicture: z
-      .custom<File>()
-      .refine((file) => file && file.size > 0, {
-        message: 'Please upload a profile picture',
-      })
-      .refine(
-        (file) =>
-          file.size <= maxFileSizeMb * 1024 * 1024 &&
-          acceptedFileTypes.includes(file.type),
-        {
-          message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
-        }
-      ),
-    terms: z.coerce.boolean().refine((data) => data, {
-      message: 'You must accept the Terms and Conditions',
-    }),
-  });
-
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     try {
-      schema.parse(data);
+      formSchema.parse(data);
       setErrors({});
       const { profilePicture, ...rest } = data;
       const profilePictureBase64 = await fileToBase64(profilePicture as File);
@@ -83,7 +49,6 @@ export const UncontrolledForm = () => {
         const errors = error.errors.reduce((acc, error) => {
           return { ...acc, [error.path[0]]: error.message };
         }, {});
-        console.log(errors);
         setErrors(errors);
       }
     }
