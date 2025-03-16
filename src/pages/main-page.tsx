@@ -1,10 +1,19 @@
 import { Link } from 'react-router';
 import { EmptyState } from '../components/empty-state';
-import { selectSubmissions } from '../slices/submissions-slice';
-import { useSelector } from 'react-redux';
+import {
+  deleteSubmission,
+  selectSubmissions,
+} from '../slices/submissions-slice';
+import { useSelector, useDispatch } from 'react-redux';
+import { SubmissionDetails } from '../components/submission-details';
 
 export const MainPage = () => {
   const submissions = useSelector(selectSubmissions);
+  const dispatch = useDispatch();
+
+  const handleDelete = (createdAt: string) => {
+    dispatch(deleteSubmission(createdAt));
+  };
 
   return (
     <div className="results-container">
@@ -18,30 +27,11 @@ export const MainPage = () => {
       {submissions.length === 0 && <EmptyState />}
       <div className="results-grid">
         {submissions.map((submission) => (
-          <div className="result-tile" key={submission.createdAt}>
-            <div className="avatar">
-              <img src={submission.profilePicture} alt={submission.name} />
-            </div>
-            <div className="info">
-              <h3>{submission.name}</h3>
-              <p>
-                <span>Age:</span> {submission.age}
-              </p>
-              <p>
-                <span>Email:</span> {submission.email}
-              </p>
-              <p>
-                <span>Gender:</span> {submission.gender}
-              </p>
-              <p>
-                <span>Country:</span> {submission.country}
-              </p>
-              <p className="timestamp">
-                <span>Submitted:</span> {submission.createdAt}
-              </p>
-            </div>
-            <button className="delete-btn">X</button>
-          </div>
+          <SubmissionDetails
+            key={submission.createdAt}
+            submission={submission}
+            handleDelete={handleDelete}
+          />
         ))}
       </div>
     </div>
