@@ -201,6 +201,46 @@ input[type='file'] {
   font-size: 16px;
 }
 
+/* password-strength-meter */
+.password-strength-meter {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+}
+
+.strength-segment {
+  height: 15px;
+  flex: 1;
+  background-color: rgba(160, 255, 112, 0.1);
+  border: 1px solid rgba(160, 255, 112, 0.3);
+}
+
+/* Active segments based on strength */
+.password-strength-meter.weak .strength-segment:nth-child(1) {
+  background-color: #ff6b6b;
+}
+
+.password-strength-meter.medium .strength-segment:nth-child(1),
+.password-strength-meter.medium .strength-segment:nth-child(2) {
+  background-color: #ffcc00;
+}
+
+.password-strength-meter.good .strength-segment:nth-child(1),
+.password-strength-meter.good .strength-segment:nth-child(2),
+.password-strength-meter.good .strength-segment:nth-child(3) {
+  background-color: #a0ff70;
+}
+
+.password-strength-meter.strong .strength-segment {
+  background-color: #39ff14;
+}
+
+.password-strength-label {
+  font-size: 12px;
+  text-align: right;
+  margin-top: 2px;
+}
+
 /* Error message styles */
 .error-message {
   color: #ff6b6b;

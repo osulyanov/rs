@@ -1,50 +1,119 @@
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { z } from 'zod';
+
+import { selectCountries } from '../slices/countries-slice';
+import { fileToBase64 } from '../utils/file-utils';
+import { PasswordStrengthMeter } from './password-strength-meter';
+import { UncontrolledInput } from './uncontrolled-form-elements/uncontrolled-input';
+import { ValidationError } from './validation-error';
+
 export const UncontrolledForm = () => {
+  const countries = useSelector(selectCountries);
+  const genders = ['male', 'female', 'other'] as const;
+  const nameRegexp = /^[\p{Lu}]+/u;
+  const maxFileSizeMb = 5;
+  const acceptedFileTypes = ['image/jpeg', 'image/png'];
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [password, setPassword] = useState('');
+
+  const schema = z
+    .object({
+      name: z.string().nonempty().regex(nameRegexp, {
+        message: 'Name should start with a capital letter',
+      }),
+      age: z.coerce.number().int().min(1).max(120),
+      email: z.string().email(),
+      password: z.string().nonempty(),
+      passwordConfirmation: z.string(),
+      gender: z.enum(genders),
+      country: z.enum(countries as [string, ...string[]]),
+      profilePicture: z
+        .custom<File>()
+        .refine((file) => file && file.size > 0, {
+          message: 'Please upload a profile picture',
+        })
+        .refine(
+          (file) =>
+            file.size <= maxFileSizeMb * 1024 * 1024 &&
+            acceptedFileTypes.includes(file.type),
+          {
+            message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
+          }
+        ),
+      terms: z.coerce.boolean().refine((data) => data, {
+        message: 'You must accept the Terms and Conditions',
+      }),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: "Passwords don't match",
+      path: ['passwordConfirmation'],
+    });
+
+  const submit = async (event: React.FormEvent) => {
+    console.log('submitting…');
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    setPassword(data.password as string);
+    console.log(data);
+    try {
+      schema.parse(data);
+      console.log('Form submitted:', data);
+      const profilePicture = formData.get('profilePicture') as File;
+      if (profilePicture) {
+        const profilePictureBase64 = await fileToBase64(profilePicture);
+        console.log('Profile picture (base64):', profilePictureBase64);
+      }
+      setErrors({});
+    } catch (error) {
+      console.log(error);
+      if (error instanceof z.ZodError) {
+        const errors = error.errors.reduce((acc, error) => {
+          return { ...acc, [error.path[0]]: error.message };
+        }, {});
+        setErrors(errors);
+        console.log(errors);
+      }
+    }
+  };
+
   return (
-    <form noValidate>
-      <div className="form-group">
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="name" required />
-        <div className="error-message" id="name-error">
-          Please enter your name
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="age">Age:</label>
-        <input type="number" id="age" name="age" min="1" max="120" required />
-        <div className="error-message" id="age-error">
-          Please enter a valid age (1-120)
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" required />
-        <div className="error-message" id="email-error">
-          Please enter a valid email address
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-        <div className="error-message" id="password-error">
-          Password must be at least 8 characters
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="confirm-password">Confirm Password:</label>
-        <input
-          type="password"
-          id="confirm-password"
-          name="confirm-password"
-          required
-        />
-        <div className="error-message" id="confirm-password-error">
-          Passwords do not match
-        </div>
-      </div>
+    <form onSubmit={submit} noValidate={true}>
+      <UncontrolledInput
+        type="text"
+        name="name"
+        title="Name"
+        error={errors.name}
+      />
+      <UncontrolledInput
+        type="number"
+        name="age"
+        title="Age"
+        error={errors.age}
+      />
+      <UncontrolledInput
+        type="email"
+        name="email"
+        title="Email"
+        error={errors.email}
+      />
+      <UncontrolledInput
+        type="password"
+        name="password"
+        title="Password"
+        error={errors.password}
+      >
+        <PasswordStrengthMeter password={password} />
+      </UncontrolledInput>
+      <UncontrolledInput
+        type="password"
+        name="passwordConfirmation"
+        title="Confirm Password"
+        error={errors.passwordConfirmation}
+      />
 
       <div className="form-group">
         <label>Gender:</label>
@@ -58,35 +127,18 @@ export const UncontrolledForm = () => {
           <input type="radio" id="other" name="gender" value="other" />
           <label htmlFor="other">Other</label>
         </div>
-        <div className="error-message" id="gender-error">
-          Please select a gender
-        </div>
+        <ValidationError text={errors.gender} />
       </div>
 
       <div className="form-group">
         <label htmlFor="country">Country:</label>
-        <input
-          type="text"
-          id="country"
-          name="country"
-          list="countries"
-          required
-        />
+        <input type="text" id="country" name="country" list="countries" />
         <datalist id="countries">
-          <option value="United States" />
-          <option value="Canada" />
-          <option value="United Kingdom" />
-          <option value="Australia" />
-          <option value="Germany" />
-          <option value="France" />
-          <option value="Japan" />
-          <option value="Brazil" />
-          <option value="India" />
-          <option value="Russia" />
+          {countries.map((country) => (
+            <option key={country} value={country} />
+          ))}
         </datalist>
-        <div className="error-message" id="country-error">
-          Please select a country
-        </div>
+        <ValidationError text={errors.country} />
       </div>
 
       <div className="form-group">
@@ -94,28 +146,21 @@ export const UncontrolledForm = () => {
         <input
           type="file"
           id="profile-picture"
-          name="profile-picture"
+          name="profilePicture"
           accept="image/*"
         />
-        <div className="error-message" id="profile-picture-error">
-          Please upload a valid image file
-        </div>
+        <ValidationError text={errors.profilePicture} />
       </div>
 
       <div className="form-group checkbox-group">
-        <input type="checkbox" id="terms" name="terms" required />
+        <input type="checkbox" id="terms" name="terms" />
         <label htmlFor="terms">I accept the Terms and Conditions</label>
-        <div className="error-message" id="terms-error">
-          You must accept the terms and conditions
-        </div>
+        <ValidationError text={errors.terms} />
       </div>
 
       <div className="form-actions">
         <button type="submit" className="submit-btn">
           Submit
-        </button>
-        <button type="reset" className="reset-btn">
-          Reset
         </button>
       </div>
     </form>

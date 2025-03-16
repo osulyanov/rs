@@ -31,5 +31,6 @@ export const submissionsSlice = createSlice({
 });
 
 export const { addSubmission, deleteSubmission } = submissionsSlice.actions;
-
+export const selectSubmissions = (state: { submissions: SubmissionState[] }) =>
+  state.submissions;
 export default submissionsSlice.reducer;

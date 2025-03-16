@@ -1,18 +1,10 @@
 import { Link } from 'react-router';
 import { EmptyState } from '../components/empty-state';
+import { selectSubmissions } from '../slices/submissions-slice';
+import { useSelector } from 'react-redux';
 
 export const MainPage = () => {
-  interface Submission {
-    id: string;
-    name: string;
-    age: number;
-    email: string;
-    gender: string;
-    country: string;
-    createdAt: string;
-    image: string;
-  }
-  const submissions: Submission[] = [];
+  const submissions = useSelector(selectSubmissions);
 
   return (
     <div className="results-container">
@@ -24,14 +16,14 @@ export const MainPage = () => {
       </Link>
       <h2>Form Submissions</h2>
       {submissions.length === 0 && <EmptyState />}
-      {submissions.map((submission) => (
-        <div className="results-grid" key={submission.id}>
-          <div className="result-tile">
+      <div className="results-grid">
+        {submissions.map((submission) => (
+          <div className="result-tile" key={submission.createdAt}>
             <div className="avatar">
-              <img src={submission.image} alt={submission.name} />
+              <img src={submission.profilePicture} alt={submission.name} />
             </div>
             <div className="info">
-              <h3>Олег</h3>
+              <h3>{submission.name}</h3>
               <p>
                 <span>Age:</span> {submission.age}
               </p>
@@ -50,8 +42,8 @@ export const MainPage = () => {
             </div>
             <button className="delete-btn">X</button>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
