@@ -39,30 +39,22 @@ export const formSchema = z
       errorMap: () => ({ message: 'Please select a gender' }),
     }),
     country: z.string().nonempty({ message: 'Please select a country' }),
-    profilePicture: z
-      .any()
-      .optional()
-      .refine(
-        (value) => {
-          // Skip validation if no file is selected
-          if (!value || (value instanceof FileList && value.length === 0)) {
-            return true;
-          }
-
-          // If we have a FileList, get the first file
-          const file = value instanceof FileList ? value[0] : value;
-
-          // Check if it's a valid file
-          return (
-            file &&
-            file.size <= maxFileSizeMb * 1024 * 1024 &&
-            acceptedFileTypes.includes(file.type)
-          );
-        },
-        {
-          message: `Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
+    profilePicture: z.any().refine(
+      (value) => {
+        if (!value || (value instanceof FileList && value.length === 0)) {
+          return false;
         }
-      ),
+        const file = value instanceof FileList ? value[0] : value;
+        return (
+          file &&
+          file.size <= maxFileSizeMb * 1024 * 1024 &&
+          acceptedFileTypes.includes(file.type)
+        );
+      },
+      {
+        message: `Profile picture is required. Only JPEG and PNG files less than ${maxFileSizeMb}MB are allowed`,
+      }
+    ),
     terms: z.coerce.boolean().refine((data) => data, {
       message: 'You must accept the Terms and Conditions',
     }),
