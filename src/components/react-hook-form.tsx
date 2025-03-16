@@ -12,10 +12,11 @@ export const ReactHookForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
   });
 
   const password = watch('password', '');
@@ -122,7 +123,7 @@ export const ReactHookForm = () => {
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="submit-btn">
+        <button type="submit" className="submit-btn" disabled={!isValid}>
           Submit
         </button>
       </div>

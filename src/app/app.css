@@ -289,6 +289,18 @@ button:hover {
   box-shadow: 0 0 10px #a0ff70;
 }
 
+.submit-btn:disabled {
+  background-color: #a0ff70;
+  color: #0a1a0a;
+  box-shadow: 0 0 10px #a0ff70;
+}
+
+.submit-btn:disabled:hover {
+  background-color: #a0ff70;
+  color: #0a1a0a;
+  box-shadow: 0 0 10px #a0ff70;
+}
+
 /* Results Grid Styles */
 .results-grid {
   display: grid;
