@@ -12,12 +12,12 @@ export const ReactHookForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, dirtyFields },
+    formState: { errors, isValid },
     watch,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    mode: 'onChange',
-    delayError: 50,
+    mode: 'all',
+    delayError: 0,
   });
 
   const password = watch('password', '');
@@ -127,11 +127,9 @@ export const ReactHookForm = () => {
 
       <div className="form-actions">
         <div className="validation-status">
-          {Object.keys(dirtyFields).length > 0 && (
-            <span className={isValid ? 'valid-message' : 'invalid-message'}>
-              {isValid ? 'Form is valid' : 'Please fix the errors above'}
-            </span>
-          )}
+          <span className={isValid ? 'valid-message' : 'invalid-message'}>
+            {isValid ? 'Form is valid' : 'Please fill in all fields correctly'}
+          </span>
         </div>
         <button type="submit" className="submit-btn" disabled={!isValid}>
           Submit

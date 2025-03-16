@@ -1,6 +1,6 @@
 import { ValidationError } from './validation-error';
 import { UseFormRegisterReturn } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export const ReactHookFormInput = ({
   register,
@@ -17,21 +17,7 @@ export const ReactHookFormInput = ({
   children?: React.ReactNode;
   type: string;
 }) => {
-  const [isTouched, setIsTouched] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-
-  useEffect(() => {
-    if (error && !isTouched) {
-      setIsTouched(true);
-    }
-  }, [error, isTouched]);
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsTouched(true);
-    if (register.onBlur) {
-      register.onBlur(e);
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsDirty(true);
@@ -40,7 +26,7 @@ export const ReactHookFormInput = ({
     }
   };
 
-  const inputClassName = `form-input ${isTouched && isDirty ? (error ? 'invalid' : 'valid') : ''}`;
+  const inputClassName = `form-input ${error ? 'invalid' : isDirty ? 'valid' : ''}`;
 
   return (
     <div className="form-group">
@@ -50,7 +36,6 @@ export const ReactHookFormInput = ({
         id={name}
         type={type}
         className={inputClassName}
-        onBlur={handleBlur}
         onChange={handleChange}
       />
       <ValidationError text={error} />
