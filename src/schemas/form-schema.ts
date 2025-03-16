@@ -7,15 +7,38 @@ const acceptedFileTypes = ['image/jpeg', 'image/png'];
 
 export const formSchema = z
   .object({
-    name: z.string().nonempty().regex(nameRegexp, {
-      message: 'Name should start with a capital letter',
+    name: z
+      .string()
+      .nonempty({ message: 'Name is required' })
+      .regex(nameRegexp, {
+        message: 'Name should start with a capital letter',
+      }),
+    age: z.coerce
+      .number()
+      .int({ message: 'Age must be a whole number' })
+      .min(1, { message: 'Age must be at least 1' })
+      .max(120, { message: 'Age must be at most 120' }),
+    email: z
+      .string()
+      .nonempty({ message: 'Email is required' })
+      .email({ message: 'Please enter a valid email address' }),
+    password: z
+      .string()
+      .nonempty({ message: 'Password is required' })
+      .regex(/[A-Z]/, {
+        message: 'Password must contain at least one uppercase letter',
+      })
+      .regex(/[a-z]/, {
+        message: 'Password must contain at least one lowercase letter',
+      })
+      .regex(/[0-9]/, { message: 'Password must contain at least one number' }),
+    passwordConfirmation: z
+      .string()
+      .nonempty({ message: 'Please confirm your password' }),
+    gender: z.enum(genders, {
+      errorMap: () => ({ message: 'Please select a gender' }),
     }),
-    age: z.coerce.number().int().min(1).max(120),
-    email: z.string().email(),
-    password: z.string().nonempty(),
-    passwordConfirmation: z.string(),
-    gender: z.enum(genders),
-    country: z.string(),
+    country: z.string().nonempty({ message: 'Please select a country' }),
     profilePicture: z
       .custom<File>()
       .refine((file) => file && file.size > 0, {
