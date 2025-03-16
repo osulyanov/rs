@@ -3,9 +3,10 @@ import { SubmissionState } from '../slices/submissions-slice';
 export const SubmissionDetails = (props: {
   submission: SubmissionState;
   handleDelete: (key: string) => void;
+  highlight: boolean;
 }) => {
   return (
-    <div className="result-tile">
+    <div className={`result-tile ${props.highlight ? 'highlight' : ''}`}>
       <div className="avatar">
         <img
           src={props.submission.profilePicture}

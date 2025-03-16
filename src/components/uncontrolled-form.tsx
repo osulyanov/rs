@@ -74,8 +74,10 @@ export const UncontrolledForm = () => {
         createdAt: new Date().toISOString(),
       } as SubmissionState;
       dispatch(addSubmission(submission));
-      dispatch(addCountry(submission.country));
-      navigate('/');
+      if (!countries.includes(submission.country)) {
+        dispatch(addCountry(submission.country));
+      }
+      navigate(`/${submission.createdAt}`);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.reduce((acc, error) => {

@@ -9,7 +9,7 @@ export const App = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route index element={<MainPage />} />
+        <Route path="/:latestSubmission?" element={<MainPage />} />
         <Route path="react-hook-form" element={<ReactHookFormPage />} />
         <Route path="uncontrolled-form" element={<UncontrolledFormPage />} />
       </Route>

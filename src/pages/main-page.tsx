@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { EmptyState } from '../components/empty-state';
 import {
   deleteSubmission,
@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SubmissionDetails } from '../components/submission-details';
 
 export const MainPage = () => {
+  const { latestSubmission } = useParams();
   const submissions = useSelector(selectSubmissions);
   const dispatch = useDispatch();
 
@@ -31,6 +32,7 @@ export const MainPage = () => {
             key={submission.createdAt}
             submission={submission}
             handleDelete={handleDelete}
+            highlight={latestSubmission === submission.createdAt}
           />
         ))}
       </div>
