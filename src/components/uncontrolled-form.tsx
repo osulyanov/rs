@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { selectCountries } from '../slices/countries-slice';
+import { selectCountries, addCountry } from '../slices/countries-slice';
 import { fileToBase64 } from '../utils/file-utils';
 import { PasswordStrengthMeter } from './password-strength-meter';
 import { UncontrolledInput } from './uncontrolled-form-elements/uncontrolled-input';
@@ -32,7 +32,7 @@ export const UncontrolledForm = () => {
       password: z.string().nonempty(),
       passwordConfirmation: z.string(),
       gender: z.enum(genders),
-      country: z.enum(countries as [string, ...string[]]),
+      country: z.string(),
       profilePicture: z
         .custom<File>()
         .refine((file) => file && file.size > 0, {
@@ -70,8 +70,9 @@ export const UncontrolledForm = () => {
         ...rest,
         profilePicture: profilePictureBase64,
         createdAt: new Date().toISOString(),
-      };
-      dispatch(addSubmission(submission as SubmissionState));
+      } as SubmissionState;
+      dispatch(addSubmission(submission));
+      dispatch(addCountry(submission.country));
       navigate('/');
     } catch (error) {
       if (error instanceof z.ZodError) {

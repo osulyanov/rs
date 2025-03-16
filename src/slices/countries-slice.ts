@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface CountriesState {
   countries: string[];
@@ -11,10 +12,15 @@ const initialState: CountriesState = {
 export const countriesSlice = createSlice({
   name: 'countries',
   initialState,
-  reducers: {},
+  reducers: {
+    addCountry: (state, action: PayloadAction<string>) => {
+      state.countries.push(action.payload);
+    },
+  },
 });
 
 export const selectCountries = (state: { countries: CountriesState }) =>
   state.countries.countries;
+export const { addCountry } = countriesSlice.actions;
 
 export default countriesSlice.reducer;
