@@ -1,5 +1,7 @@
 import { Country } from 'src/types/country';
+
 import styles from './countries-table.module.css';
+
 export const CountriesTableItem = ({
   country,
   visitedCountries,

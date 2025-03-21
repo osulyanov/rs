@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Country, FilterConfig, SortConfig } from '../types/country';
+import { useEffect, useState } from 'react';
+
 import { fetchCountries } from '../services/countries-api';
+import { Country, FilterConfig, SortConfig } from '../types/country';
 
 export const useCountries = () => {
   const [countries, setCountries] = useState<Country[]>([]);
