@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   getVisitedCountries,
@@ -10,20 +10,24 @@ export const useVisitedCountries = () => {
     getVisitedCountries()
   );
 
-  // TODO: Add useCallback later with visitedCountries dependency
-  const toggleCountry = (countryCode: string) => {
-    const updated = visitedCountries.includes(countryCode)
-      ? visitedCountries.filter((code) => code !== countryCode)
-      : [...visitedCountries, countryCode];
+  const toggleCountry = useCallback(
+    (countryCode: string) => {
+      const updated = visitedCountries.includes(countryCode)
+        ? visitedCountries.filter((code) => code !== countryCode)
+        : [...visitedCountries, countryCode];
 
-    setVisited(updated);
-    setVisitedCountries(updated);
-  };
+      setVisited(updated);
+      setVisitedCountries(updated);
+    },
+    [visitedCountries]
+  );
 
-  // TODO: Add useCallback later with visitedCountries dependency
-  const isVisited = (countryCode: string) => {
-    return visitedCountries.includes(countryCode);
-  };
+  const isVisited = useCallback(
+    (countryCode: string) => {
+      return visitedCountries.includes(countryCode);
+    },
+    [visitedCountries]
+  );
 
   return {
     visitedCountries,
