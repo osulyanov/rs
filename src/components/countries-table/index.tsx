@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Country, SortConfig, FilterConfig } from '../../types/country';
 import styles from './countries-table.module.css';
 import { CountriesTableItem } from './countries-table-item';
@@ -26,13 +26,30 @@ export const CountriesTable: React.FC<CountriesTableProps> = ({
   visitedCountries,
   onToggleVisit,
 }) => {
-  const handleSort = (field: 'name' | 'population') => {
-    onSort({
-      field,
-      direction:
-        sort.field === field && sort.direction === 'asc' ? 'desc' : 'asc',
-    });
-  };
+  const handleSort = useCallback(
+    (field: 'name' | 'population') => {
+      onSort({
+        field,
+        direction:
+          sort.field === field && sort.direction === 'asc' ? 'desc' : 'asc',
+      });
+    },
+    [sort, onSort]
+  );
+
+  const handleNameFilter = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onFilter({ ...filters, name: e.target.value });
+    },
+    [filters, onFilter]
+  );
+
+  const handleRegionFilter = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      onFilter({ ...filters, region: e.target.value });
+    },
+    [filters, onFilter]
+  );
 
   if (loading) {
     return <div className={styles.loading}>Loading countries...</div>;
@@ -49,12 +66,12 @@ export const CountriesTable: React.FC<CountriesTableProps> = ({
           type="text"
           placeholder="Search by name..."
           value={filters.name || ''}
-          onChange={(e) => onFilter({ ...filters, name: e.target.value })}
+          onChange={handleNameFilter}
           className={styles.searchInput}
         />
         <select
           value={filters.region || ''}
-          onChange={(e) => onFilter({ ...filters, region: e.target.value })}
+          onChange={handleRegionFilter}
           className={styles.regionSelect}
         >
           <option value="">All Regions</option>

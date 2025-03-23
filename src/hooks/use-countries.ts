@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import { fetchCountries } from '../services/countries-api';
 import { Country, FilterConfig, SortConfig } from '../types/country';
@@ -7,7 +7,6 @@ export const useCountries = () => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
   const [filters, setFilters] = useState<FilterConfig>({});
   const [sort, setSort] = useState<SortConfig>({
     field: 'name',
@@ -19,7 +18,6 @@ export const useCountries = () => {
       try {
         const data = await fetchCountries();
         setCountries(data);
-        setFilteredCountries(data);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : 'Failed to fetch countries'
@@ -32,7 +30,7 @@ export const useCountries = () => {
     loadCountries();
   }, []);
 
-  useEffect(() => {
+  const filteredCountries = useMemo(() => {
     let result = [...countries];
 
     if (filters.name) {
@@ -64,7 +62,7 @@ export const useCountries = () => {
       return 0;
     });
 
-    setFilteredCountries(result);
+    return result;
   }, [countries, filters, sort]);
 
   return {

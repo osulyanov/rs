@@ -1,8 +1,9 @@
+import React from 'react';
 import { Country } from 'src/types/country';
 
 import styles from './countries-table.module.css';
 
-export const CountriesTableItem = ({
+const CountriesTableItemComponent = ({
   country,
   visitedCountries,
   onToggleVisit,
@@ -29,3 +30,7 @@ export const CountriesTableItem = ({
     </tr>
   );
 };
+
+CountriesTableItemComponent.displayName = 'CountriesTableItem';
+
+export const CountriesTableItem = React.memo(CountriesTableItemComponent);
